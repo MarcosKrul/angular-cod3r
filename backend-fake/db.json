@@ -1,0 +1,19 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Celular MOTO G3",
+      "price": "989.99"
+    },
+    {
+      "id": 2,
+      "name": "Monitor BENQ",
+      "price": "1299.50"
+    },
+    {
+      "id": 3,
+      "name": "Mouse Razer viper mini",
+      "price": "358.99"
+    }
+  ]
+}
