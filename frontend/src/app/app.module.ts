@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +23,11 @@ import { RedDirective } from './directives/red.directive';
 import { MatTableModule } from '@angular/material/table';
 import { ProductCreateComponent } from './components/products/product-create/product-create.component';
 import { ProductReadComponent } from './components/products/product-read/product-read.component';
+
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -52,7 +57,12 @@ import { ProductReadComponent } from './components/products/product-read/product
     MatFormFieldModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-br'
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
