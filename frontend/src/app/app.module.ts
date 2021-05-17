@@ -14,6 +14,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HomeComponent } from './views/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { ProductCrudComponent } from './views/product-crud/product-crud.component';
 import { RedDirective } from './directives/red.directive';
 import { ProductCreateComponent } from './components/products/product-create/product-create.component';
@@ -30,14 +34,18 @@ import { ProductCreateComponent } from './components/products/product-create/pro
     ProductCreateComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     MatListModule,
     MatCardModule,
+    MatInputModule,
     MatButtonModule,
+    HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,
     AppRoutingModule,
     MatSnackBarModule,
+    MatFormFieldModule,
     BrowserAnimationsModule
   ],
   providers: [],
