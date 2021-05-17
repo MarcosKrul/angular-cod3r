@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ProductCrudComponent } from './views/product-crud/product-crud.component';
 import { RedDirective } from './directives/red.directive';
 import { ProductCreateComponent } from './components/products/product-create/product-create.component';
+import { ProductReadComponent } from './components/products/product-read/product-read.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProductCreateComponent } from './components/products/product-create/pro
     HomeComponent,
     ProductCrudComponent,
     RedDirective,
-    ProductCreateComponent
+    ProductCreateComponent,
+    ProductReadComponent
   ],
   imports: [
     FormsModule,
