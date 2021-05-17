@@ -1,0 +1,291 @@
+1) Angular
+-> Framework Js desenvolvido pela Google
+-> Objetivo: criação de aplicações SPA (single page application) baseado em componentes
+Conceito existente no react
+-> CLI - Command line interface
+Instalação: npm install -g @angular/cli
+-> Criação de um projeto angular
+Base: ng new <NOME_APP>
+Flag: --prefix <PREFIX>  => prefixo utilizado para referenciar os componentes
+ex.: --prefix rerum      => <rerum-header />
+Flag: --minimal          => tira alguns arquivos; ex.: arquivos de testes
+-> Possibilidade de encapsulamento de componenetes
+Não existe no react
+Definir componentes privados e restritos a um determinado módulo
+Além da divisão em componentes, encapsulamento em módulos
+Por default, existe o módulo AppModule; será chamado para iniciar a aplicações
+-> AppModule possui uma prop boostrap
+Propriedade que aponta para o principal componente/ componente de inicialização (AppComponent, por default)
+Componente raíz da árvore de componentes
+-> Componente angular
+Conceito semelhante ao react
+Encapsulamento de código html, css e js/ts para um componenete
+O componente será utilizado/referenciado como uma tag html
+ex.: componente home => <app-home />
+-> Propriedades de um módulo
+Declarations: definição de todos os componenetes/diretivas/pipes que fazem parte do módulo
+Imports: importação de outros módulos necessários
+Exports: componentes/diretivas/pipes visíveis fora do módulo (não são privados ao módulo)
+Providers: declaração dos services
+Boostrap: definição do componente que será carregado naquele módulo (o elemento raíz da árvore); todos os outros componenetes
+serão chamados a partir deste
+-> O módulo AppModule é responsável pela definição do boostrap
+-> O módulo AppModule não precisa exportar, apenas realizar importações
+
+-> Angular opera de forma imperativa
+Js puro e jquery operam de forma declarativa; é necessário buscar os elementos da interface (div, h1, ...) manualmente
+ex.: document.getElementById(id)
+Angular é imperativa; apenas indicamos qual informação será apresentada
+
+-> Decorators
+Angular usa muito decorators
+É um padrão de projeto
+Objetivo: evitar herança, trabalhando com composição
+No angular, um decorator define o papel de uma classe
+ex.: para uma classe ser um componente
+@Component({
+  selector: 'PREFIX-NAME',
+  templateUrl: './NAME.component.html',
+  styleUrls: ['./NAME.component.css']
+})
+ex.: para uma classe ser uma diretiva: @Directive
+
+1.1) Componente
+-> A stylesheet de um componente é fechada
+Estilos de um componenete são internos a ele
+Existe um arquivo específico para estilos globais da aplicação
+
+
+1.2) Diretiva
+-> Diretiva de atributo
+Altera a aparência e/ou o comportamento de um elemento, componente ou outra diretiva
+ex.: criar uma diretiva dentro de um botão que será responsável pelo comportamento do elemento (ex.: chamada à uma API)
+-> Exemplo: diretiva de atributo para alterar aparência
+// diretiva para alterar a cor de um elemento para vermelho
+@Directive({
+    selector: '[appRed]'
+})
+export class RedDirective {
+    constructor (element: ElementRef){
+        element.nativeElement.style.color = '#ff0000';
+    }
+}
+// html
+<i class="material-icons" appRed>       // appRed => selector da diretiva
+    favorite
+</i>
+-> Diretiva estrutural
+Altera a estrutura da página / altera a DOM (Document object model)
+Adiciona ou remove elementos da DOM
+ex.:
+// html
+<form *ngIf="products"> ... </form>
+*ngIf: diretiva estrutural
+Realiza uma condicional para verificar se a variável "products" existe/possui algo/é válida
+É uma diretiva estrutural porque está alterando a estrutura/html da página
+Decide se deve mostrar o formulário
+ex.:
+//html
+<ul>
+    <li *ngFor="let product of products">
+        {{product.name}}
+    </li>
+</ul>
+Adiciona um item da lista para cada "product" dentro do vetor "products"
+-> Valor implícito
+Possibilidade de utilizar o valor de alguma variável
+A diretiva estrutural cria um contexto que pode conter alguma variável
+ex.:
+<ul>
+    <li *ngMyFor="let n em [1,2,3]">
+        {{ n }}
+    </li>
+</ul>
+É possível pegar a lista [1,2,3]
+@Directive({
+    selector: "[myFor]"
+})
+export class ForDirective implements OnInit {
+
+    @Input("myForEm") numbers: number[];
+
+    constructor(
+        private container: ViewContainerRef,
+        private template: TemplateRef<any>
+    ) {}
+
+    ngOnInit(): void {
+        for (let number of this.numbers) 
+            this.container.createEmbeddedView(
+                this.template,
+                { $implicit: number } // possibilidade de usar a variável n no double mustache {{}}
+            );
+    }
+}
+-> Resumo
+Diretiva de atributo: altera estilo (css) ou comportamento (js/ts)
+Diretiva estrutural: altera a dom (html)
+
+
+1.3) Property Binding / binding de atributo
+-> Utilizado para comunicação entre os arquivos html e js/ts
+-> Ligação de atributos
+ex.:
+// ts
+...
+export class ProductReadComponent implements onInit {
+    products: Product[];        // lista de produtos
+}
+// html
+<table [dataSource]="products"> 
+</table>
+
+dataSource é uma prop do angular/material para a tag table
+Utilização dos colchetes[] para realizar a ligação entre a string "products" com a propriedade
+products do componente ProductReadComponent
+dataSource = products[]
+
+
+1.4) Event bindig / binding de evento
+-> Ligação entre um evento do html (ex.: click) com um método do componente
+ex.:
+// ts
+...
+export class ProductCreateComponent implements OnInit {
+    
+    createProduct(): void {
+        ...
+    }
+}
+// html
+<button (click)="createProduct()">
+    Salvar
+</button>
+No evento de click no botão, o método createProduct do componente será executado
+
+
+1.5) One way data binding vs Two way data binding
+-> Exemplo: Binding de atributo
+-> One way data binding
+Apenas um caminho: ts para html
+Ao alterar o valor de uma prop/variável no arquivo .ts, a prop da tag html será alterada
+ex.:
+//html
+<input [value]="nome"/>
+// ts
+nome: string;
+-> Two way data binding
+Dois caminhos: ts para html e html para ts
+Ao alterar o valor de uma prop/variável no arquivo .ts, a prop da tag html será alterada
+Ao realizar alguma ação/evento no html, a prop/variável ts será alterada
+ex.:
+// html
+<input [(ngModel)]="nome"/>
+// ts
+nome: string;
+
+
+1.6) Angular Router
+-> Mapeamento entre rota e componenete
+Para cada rota, um componente específico será renderizado
+-> Router outlet
+Componenete que fazer parte do angular router
+Os componenetes, de acordo com a navegação, serão enjetados dentro do outlet
+ex.: deixar header e nav fixos, alterando apenas o conteúdo (no outlet)
+
+
+1.7) Angular pipes
+-> Processamentos sobre variáveis
+ex.:
+<p>
+    O vencimento é 
+    {{ product.vencimento | date }}
+</p>
+// product.vencimento | date -> formatação da propriedade
+// date é um método que será chamado, recebendo product.vencimento
+// a data será transformada para um padrão específico
+-> Passagem de parâmetros para o pipe
+ex.:
+<p>
+    Valor:
+    {{ product.price | currency: 'BRL' }}
+</p>
+// formatar o valor product.price para a moeda brasileira
+-> Múltiplos processamentos / encadeamento de pipes
+ex.:
+<p>
+    O vencimento é 
+    {{ product.vencimento | date | uppercase }}
+</p>
+
+
+1.8) Observable
+-> Programação reativa
+Angular utiliza o Framework ReactiveX (rxjs); possui implementações para outras linguagens
+-> Reativo x Provativo
+Deseja-se que o sistema/código seja reativo
+Um código proativo vai ficar executando/tentando a mesma tarefa várias vezes, mesmo que sem necessidade
+Um código reativo só será executado quando necessário, dependendo de um evento externo; o código possui um trigger correto
+-> Baseado no padrão de projeto Observer, muito utilizado na programação web
+Padrão orientado a eventos
+Programação reativa existe baseada nesse padrão
+subject: elemento que monitora os eventos
+Cada entidade/código deve se registrar em um evento com o subject
+A partir disso, quando o evento acontecer, o subject notifica cada elemento registrado
+-> Sem observer: necessidade de ficar observando um evento de forma proativa
+Desvantagem: execução de código sem necessidade / consumo de recurso computacional
+-> Com observer: a função de observação e captura dos eventos é delegada para um observer/subject
+O subject notifica as partes interessadas (que se registraram no evento)
+O código será executado apenas quando necessário; além disso, não precisou ficar ouvindo o evento
+-> Conceito de reatividade no js
+Utilização de callbacks; passar uma função como parâmetro para uma função
+Ideia de executar algo (função passada como parâmetro) quando algo acontecer
+Utilização de Promises (introduzidas no js a partir do ecmascript2015/es6)
+-> Observables
+Vantagens em relação a promise: reusável, stream de dados e operadores (promise - then; observables possui map, filters, ...)
+ex.:
+// observer / subject
+// fica ouvindo quando o backend vai retornar a resposta da requisição http
+handleSubmit(user: User): Observable<User> {
+    return this.http.post<User>(this.url, user);
+}
+// método subscribe faz o registro da arrow function no evento de retorno do backend
+// a arrow function só será executada quando o backend retornar uma response
+// a arrow function não fica observando esse evento, apenas recebe a notificação do subject
+save(): void {
+    this.handleSubmit(this.user).subscribe(() => {
+        // função que será executada quando o backend retornar uma resposta
+    });
+}
+
+
+1.9) Services
+-> Classes com objetivo de organizar e compartilhar código entre componentes
+Compartilhar métodos e atributos/dados entre componenetes / diretivas
+-> Ideia de separação de responsabilidades
+ex.: criar um service para encapsular o acesso ao backend
+-> São lógicas que não estão relacionadas com a parte visual do componente
+Faz mais sentido lógicas não relacionadas com a parte visual estarem em um service
+-> Criar um service via cli
+ng generate service PATH ou ng g s PATH
+-> Decorator
+Um service possui o decorator @Injectable({ provideIn: "root" })
+Significa que essa classe pode ser injetada em outras classes 
+Se o componente precisa de um service, a classe do componente irá receber uma injeção de dependência
+-> @Injectable({ provideIn: "root" })
+provideInt: 'root' => utilização do injetor raíz da aplicação
+Definindo que o service será provido pela aplicação, só existirá uma instância da classe do service
+Todos os componentes irão utilizar a mesma instância da classe do service
+Padrão de projeto singleton
+-> provideIn: "root"
+Definição de qual será o provider
+root é um alias para AppModule
+É possível criar outro provider para outro módulo, definindo o módulo na prop provideIn
+Necessidade de importar o componente e referenciar
+-> Services são singletos dentro do escopo de um injetor
+Module injector ou element injector
+Module: @NgModule e @Injectable; dentro do escopo do módulo, existirá uma única instância do service
+Element: @Component e @Directive; criação de uma instância própria/única para o componente/diretiva
+-> Injeção de dependência
+A classe recebe as dependências de uma fonte externa (provider)
+A classe não precisa criar uma instância de outra classe por conta própria 
