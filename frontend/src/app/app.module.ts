@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ProductCrudComponent } from './views/product-crud/product-crud.component';
 import { RedDirective } from './directives/red.directive';
+import { MatTableModule } from '@angular/material/table';
 import { ProductCreateComponent } from './components/products/product-create/product-create.component';
 import { ProductReadComponent } from './components/products/product-read/product-read.component';
 
@@ -41,6 +42,7 @@ import { ProductReadComponent } from './components/products/product-read/product
     MatListModule,
     MatCardModule,
     MatInputModule,
+    MatTableModule,
     MatButtonModule,
     HttpClientModule,
     MatToolbarModule,
