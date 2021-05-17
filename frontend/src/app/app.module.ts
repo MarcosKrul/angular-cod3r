@@ -28,6 +28,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProductUpdateComponent } from './components/products/product-update/product-update.component';
+import { ProductDeleteComponent } from './components/products/product-delete/product-delete.component';
 
 
 registerLocaleData(localePt);
@@ -44,6 +45,7 @@ registerLocaleData(localePt);
     ProductReadComponent,
     ProductCreateComponent,
     ProductUpdateComponent,
+    ProductDeleteComponent,
   ],
   imports: [
     FormsModule,

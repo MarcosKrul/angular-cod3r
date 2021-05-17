@@ -1,0 +1,32 @@
+<mat-card class="home mat-elevation-z3">
+    <mat-card-title>Deletar Produto</mat-card-title>
+
+    <form>
+        <mat-form-field>
+            <input 
+                disabled
+                matInput 
+                name="nome"
+                placeholder="Nome" 
+                [value]="product.name"
+            />
+        </mat-form-field>
+        <mat-form-field>
+            <input 
+                disabled
+                matInput 
+                name="price"
+                placeholder="Preço (R$)" 
+                [value]="product.price"
+            />
+        </mat-form-field>
+    </form>
+
+    <button mat-raised-button color="warn" (click)="deleteProduct()">
+        Deletar
+    </button>
+    
+    <button mat-raised-button (click)="cancel()">
+        Cancelar
+    </button>
+</mat-card>
